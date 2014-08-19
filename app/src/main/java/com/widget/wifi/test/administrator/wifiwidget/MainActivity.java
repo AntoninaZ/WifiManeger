@@ -5,19 +5,14 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.ConfigurationInfo;
-import android.net.NetworkInfo;
 import android.net.wifi.ScanResult;
-import android.net.wifi.SupplicantState;
 import android.net.wifi.WifiConfiguration;
-import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class MainActivity extends Activity {
 
@@ -38,34 +33,49 @@ public class MainActivity extends Activity {
         mainWifiObj = (WifiManager) getSystemService(Context.WIFI_SERVICE);
         mainWifiObj.startScan();
         wifiReciever = new WifiScanReceiver();
+        registerReceiver(wifiReciever, new IntentFilter(WifiManager.WIFI_STATE_CHANGED_ACTION));
     }
 
-    protected void onResume() {
-        registerReceiver(wifiReciever, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
-        super.onResume();
-    }
 
     class WifiScanReceiver extends BroadcastReceiver {
 
         public void onReceive(Context c, Intent intent) {
-            List<ScanResult> wifiScanList = mainWifiObj.getScanResults();
-           // List <WifiInfo> networkInfos = mainWifiObj.getConnectionInfo();
+            List<ScanResult> wifiActScanList = mainWifiObj.getScanResults();
 
-            for (int i = 0; i < wifiScanList.size(); i++){
+            for (int i = 0; i < wifiActScanList.size(); i++){
+                ScanResult scanResult = wifiActScanList.get(i);
 
-                ScanResult result = wifiScanList.get(i);
                 DataWifi data = new DataWifi();
-                data.Name = result.SSID ;
+                data.Name = scanResult.SSID;
                 data.Connect = "Avalibled";
-                data.OnOff = true;
+                data.OnOff = false;
 
                 listDataWifi.add(data);
             }
-            cAdapter = new CustomAdapter(MainActivity.this, listDataWifi);
-            listView.setAdapter(cAdapter);
 
+            List<WifiConfiguration> wifiScanList = mainWifiObj.getConfiguredNetworks();
+
+           for (int i = 0; i < wifiScanList.size(); i++){
+                WifiConfiguration wifiInfo =  wifiScanList.get(i);
+
+                DataWifi data = new DataWifi();
+
+                data.Name = wifiInfo.SSID.replace("\"","");
+
+                 switch (wifiInfo.status)
+                 {
+                     case 0:data.Connect = "Avalibled";data.OnOff = true;break;
+                     case 1:data.Connect = "Not avalibled";data.OnOff = false;break;
+                     case 2:data.Connect = "Not avalibled";data.OnOff = false;break;
+                 }
+               if(data.OnOff)listDataWifi.add(0,data);
+               else listDataWifi.add(data);
+
+
+           }
+           cAdapter = new CustomAdapter(MainActivity.this, listDataWifi);
+           listView.setAdapter(cAdapter);
         }
     }
-
 
 }
