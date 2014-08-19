@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.CheckBox;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -17,9 +17,11 @@ public class CustomAdapter extends BaseAdapter {
 private ArrayList<DataWifi> ListDataWifi;
     Context _c;
 
+
     public CustomAdapter(MainActivity mainActivity, ArrayList<DataWifi> listDataWifi) {
         _c = mainActivity;
         ListDataWifi = listDataWifi;
+
     }
 
     @Override
@@ -38,7 +40,7 @@ private ArrayList<DataWifi> ListDataWifi;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView( final int position, View convertView, ViewGroup parent) {
         View v = convertView;
 
         final DataWifi data = ListDataWifi.get(position);
@@ -51,12 +53,38 @@ private ArrayList<DataWifi> ListDataWifi;
 
         TextView wName = (TextView) v.findViewById(R.id.name_wifi);
         TextView wConn = (TextView) v.findViewById(R.id.connect);
-        CheckBox wOnOff = (CheckBox) v.findViewById(R.id.on_off);
+        final Button wDell = (Button) v.findViewById(R.id.delete);
+        final Button wDisc = (Button) v.findViewById(R.id.disconnect);
 
         wName.setText(data.Name);
         wConn.setText(data.Connect);
-        wOnOff.setChecked(data.OnOff);
+        wDell.setVisibility(View.INVISIBLE);
+        wDisc.setVisibility(View.INVISIBLE);
 
+        v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                wDell.setVisibility(View.VISIBLE);
+                wDell.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Object item = getItem(position);
+                        ListDataWifi.remove(item);
+                        notifyDataSetChanged();
+                    }
+                });
+                if(data.OnOff)
+                     wDisc.setVisibility(View.VISIBLE);
+                wDisc.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        data.Connect = "Disconnect";
+                        data.OnOff = false;
+                        notifyDataSetChanged();
+                    }
+                });
+            }
+        });
         return v;
     }
 

@@ -36,7 +36,6 @@ public class MainActivity extends Activity {
         registerReceiver(wifiReciever, new IntentFilter(WifiManager.WIFI_STATE_CHANGED_ACTION));
     }
 
-
     class WifiScanReceiver extends BroadcastReceiver {
 
         public void onReceive(Context c, Intent intent) {
@@ -64,7 +63,7 @@ public class MainActivity extends Activity {
 
                  switch (wifiInfo.status)
                  {
-                     case 0:data.Connect = "Avalibled";data.OnOff = true;break;
+                     case 0:data.Connect = "Connected";data.OnOff = true;break;
                      case 1:data.Connect = "Not avalibled";data.OnOff = false;break;
                      case 2:data.Connect = "Not avalibled";data.OnOff = false;break;
                  }
