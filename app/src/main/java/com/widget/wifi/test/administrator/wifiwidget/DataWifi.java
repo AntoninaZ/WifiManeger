@@ -7,4 +7,5 @@ public class DataWifi {
  String Name;
  Boolean OnOff;
  String Connect;
+    int WifiId;
 }

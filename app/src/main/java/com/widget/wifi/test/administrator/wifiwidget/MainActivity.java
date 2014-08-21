@@ -33,13 +33,13 @@ public class MainActivity extends Activity {
         mainWifiObj = (WifiManager) getSystemService(Context.WIFI_SERVICE);
         mainWifiObj.startScan();
         wifiReciever = new WifiScanReceiver();
-        registerReceiver(wifiReciever, new IntentFilter(WifiManager.WIFI_STATE_CHANGED_ACTION));
+        registerReceiver(wifiReciever, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
     }
 
     class WifiScanReceiver extends BroadcastReceiver {
 
         public void onReceive(Context c, Intent intent) {
-            List<ScanResult> wifiActScanList = mainWifiObj.getScanResults();
+         /*   List<ScanResult> wifiActScanList = mainWifiObj.getScanResults();
 
             for (int i = 0; i < wifiActScanList.size(); i++){
                 ScanResult scanResult = wifiActScanList.get(i);
@@ -50,7 +50,7 @@ public class MainActivity extends Activity {
                 data.OnOff = false;
 
                 listDataWifi.add(data);
-            }
+            }*/
 
             List<WifiConfiguration> wifiScanList = mainWifiObj.getConfiguredNetworks();
 
@@ -60,12 +60,12 @@ public class MainActivity extends Activity {
                 DataWifi data = new DataWifi();
 
                 data.Name = wifiInfo.SSID.replace("\"","");
-
+                data.WifiId = wifiInfo.networkId;
                  switch (wifiInfo.status)
                  {
                      case 0:data.Connect = "Connected";data.OnOff = true;break;
                      case 1:data.Connect = "Not avalibled";data.OnOff = false;break;
-                     case 2:data.Connect = "Not avalibled";data.OnOff = false;break;
+                     case 2:data.Connect = "Avalibled";data.OnOff = false;break;
                  }
                if(data.OnOff)listDataWifi.add(0,data);
                else listDataWifi.add(data);

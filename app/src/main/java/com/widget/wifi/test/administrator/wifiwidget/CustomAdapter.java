@@ -1,6 +1,8 @@
 package com.widget.wifi.test.administrator.wifiwidget;
 
 import android.content.Context;
+import android.net.wifi.WifiConfiguration;
+import android.net.wifi.WifiManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,16 +75,36 @@ private ArrayList<DataWifi> ListDataWifi;
                         notifyDataSetChanged();
                     }
                 });
-                if(data.OnOff)
-                     wDisc.setVisibility(View.VISIBLE);
-                wDisc.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        data.Connect = "Disconnect";
-                        data.OnOff = false;
-                        notifyDataSetChanged();
-                    }
-                });
+
+                wDisc.setVisibility(View.VISIBLE);
+                if(data.OnOff) {
+                    wDisc.setText("Disconnect");
+                    wDisc.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            data.Connect = "Disconnect";
+                            data.OnOff = false;
+                            WifiManager wifiManager = (WifiManager) _c.getSystemService(Context.WIFI_SERVICE);
+                            wifiManager.enableNetwork(position, true);
+                            notifyDataSetChanged();
+                        }
+                    });
+                } else { wDisc.setText("Connect");
+                       wDisc.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            data.Connect = "Connect";
+                            data.OnOff = true;
+                            WifiManager wifiManager = (WifiManager) _c.getSystemService(Context.WIFI_SERVICE);
+                            WifiConfiguration wifiConfiguration = new WifiConfiguration();
+                            wifiConfiguration.SSID = "\"" + data.Name + "\"";
+                            wifiConfiguration.networkId = data.WifiId;
+                            wifiManager.enableNetwork(wifiConfiguration.networkId,true);
+                            notifyDataSetChanged();
+                        }
+                       });
+                }
             }
         });
         return v;
