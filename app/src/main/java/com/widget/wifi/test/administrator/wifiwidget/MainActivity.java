@@ -52,6 +52,7 @@ public class MainActivity extends Activity {
                     data.Connect = "ENABLED";
                     data.OnOff = false;
                     break;
+
             }
             if (data.OnOff) listDataWifi.add(0, data);
             else listDataWifi.add(data);
