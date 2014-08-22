@@ -2,37 +2,28 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/widget"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#9e000000">
-
-    <LinearLayout
-        android:layout_width="240dp"
-        android:layout_height="match_parent"
-        android:orientation="vertical"  >
+    android:background="#9e000000" >
 
     <TextView
         android:id="@+id/name_wifi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="15dp"
-        android:textColor="#ffffffff"
-        />
+        android:textSize="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:textColor="#ffb6b6b6"
+        android:text="Wait..."/>
 
     <TextView
-        android:id="@+id/connect"
+        android:id="@+id/conn_wifi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="10dp"
-       />
-    </LinearLayout>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:text="Disconnect"
+        android:textSize="15dp"
+        android:layout_marginTop="5dp"
         android:layout_marginLeft="10dp"
-        android:background="#6c000000"
-        android:textColor="#06000000"/>
+        android:textColor="#ff242424" />
+
 </LinearLayout>

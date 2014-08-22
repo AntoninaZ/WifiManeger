@@ -53,7 +53,7 @@ private ArrayList<DataWifi> ListDataWifi;
             v = vi.inflate(R.layout.item, null);
         }
 
-        TextView wName = (TextView) v.findViewById(R.id.name_wifi);
+        TextView wName = (TextView) v.findViewById(R.id.name);
         TextView wConn = (TextView) v.findViewById(R.id.connect);
         final Button wDell = (Button) v.findViewById(R.id.delete);
         final Button wDisc = (Button) v.findViewById(R.id.disconnect);
